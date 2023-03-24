@@ -1,4 +1,3 @@
-import 'dart:ui';
 
 class Dimens {
   static const double tabBarHeight = 48.0;

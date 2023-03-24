@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:jvn_project/define/jvm_colors.dart';
 
 class MainBottomNavigationBar extends StatefulWidget {
@@ -29,10 +28,6 @@ class _MainBottomNavigationBarState extends State<MainBottomNavigationBar>
     _currentIndex = widget.currentIndex;
   }
 
-  @override
-  void dispose() {
-    super.dispose();
-  }
 
   void _onTapSelected(int index) async {
     // await HapticFeedback.lightImpact();
@@ -47,7 +42,7 @@ class _MainBottomNavigationBarState extends State<MainBottomNavigationBar>
   // 하단 탭 선언
   List<BottomNavigationBarItem> _buildNavigationBarItems() {
     return [
-      BottomNavigationBarItem(
+      const BottomNavigationBarItem(
         icon: Column(
           children: [
             // 탭 디자인 적용
@@ -63,7 +58,7 @@ class _MainBottomNavigationBarState extends State<MainBottomNavigationBar>
         label: '',
       ),
 
-      BottomNavigationBarItem(
+      const BottomNavigationBarItem(
         icon: Column(
           children: [
             // 탭 디자인 적용

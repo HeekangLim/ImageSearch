@@ -37,7 +37,7 @@ class MyApp extends StatelessWidget {
       title: 'JVN Project',
       theme: AppTheme.jvm_theme,
       onGenerateRoute: AppRoutes.onGenerateRoutes,
-      navigatorObservers: [ /* 필요시 observer 설정*/ ],
+      navigatorObservers: const [ /* 필요시 observer 설정*/ ],
 
       // context 사용을 위해 글로벌 키로 설정
       navigatorKey: AppRoutes.gNaviState,

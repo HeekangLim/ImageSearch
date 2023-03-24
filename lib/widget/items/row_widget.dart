@@ -48,13 +48,13 @@ class RowWidget extends StatelessWidget {
       height: height,
       decoration: decoration,
       child: Row(
-        children: children,
         mainAxisAlignment: mainAxisAlignment,
         mainAxisSize: mainAxisSize,
         crossAxisAlignment: crossAxisAlignment,
         textDirection: textDirection,
         verticalDirection: verticalDirection,
         textBaseline: textBaseline,
+        children: children,
       ),
     );
   }

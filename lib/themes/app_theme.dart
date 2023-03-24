@@ -24,7 +24,6 @@ class AppTheme {
       scaffoldBackgroundColor: Colors.white,
       primaryColor: Colors.blueAccent,
       splashColor: Colors.blueAccent,
-      backgroundColor: Colors.white,
 
       scrollbarTheme: const ScrollbarThemeData().copyWith(
         thumbColor: MaterialStateProperty.all(Colors.white),
@@ -35,10 +34,10 @@ class AppTheme {
           border: InputBorder.none,
       ),
       textTheme: const TextTheme(
-        bodyText1: TextStyle(
+        bodyLarge: TextStyle(
           fontSize: Dimens.txt_size_body_1,
         ),
-        bodyText2: TextStyle(
+        bodyMedium: TextStyle(
           fontSize: Dimens.txt_size_body_2,
         ),
       ),

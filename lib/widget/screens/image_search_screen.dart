@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class ImageSearchScreen extends StatefulWidget {
-  ImageSearchScreen({Key? key}) : super(key: key);
+  const ImageSearchScreen({Key? key}) : super(key: key);
   @override
   _ImageSearchScreenState createState() => _ImageSearchScreenState();
 }

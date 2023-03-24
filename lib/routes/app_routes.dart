@@ -29,9 +29,9 @@ class AppRoutes {
     }
     if ( PAGE_PATH[PAGES.main] == settings.name ) {
       // return _materialRoute(settings, MainScreen());
-      return PageTransition(child: MainScreen(), type: PageTransitionType.fade, settings: settings);
+      return PageTransition(child: const MainScreen(), type: PageTransitionType.fade, settings: settings);
     }
     // default
-    return PageTransition(child: MainScreen(), type: PageTransitionType.leftToRight, settings: settings);
+    return PageTransition(child: const MainScreen(), type: PageTransitionType.leftToRight, settings: settings);
   }
 }

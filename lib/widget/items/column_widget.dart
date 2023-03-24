@@ -50,13 +50,13 @@ class ColumnWidget extends StatelessWidget {
         decoration: decoration,
         constraints: constraints,
         child: Column(
-          children: children,
           mainAxisAlignment: mainAxisAlignment,
           mainAxisSize: mainAxisSize,
           crossAxisAlignment: crossAxisAlignment,
           textDirection: textDirection,
           verticalDirection: verticalDirection,
           textBaseline: textBaseline,
+          children: children,
         ),
     );
   }

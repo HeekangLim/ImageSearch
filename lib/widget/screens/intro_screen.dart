@@ -9,7 +9,7 @@ class IntroScreen extends StatelessWidget {
   }
 
   Widget body() {
-    return Scaffold(
+    return const Scaffold(
         body: SafeArea(
           child: Column(
             children:[],

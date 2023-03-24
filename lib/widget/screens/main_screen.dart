@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:jvn_project/widget/items/column_widget.dart';
 import 'package:jvn_project/widget/items/main_bottom_navigation_bar.dart';
 import 'package:jvn_project/widget/screens/image_favourites.dart';
 import 'package:jvn_project/widget/screens/image_search_screen.dart';
 
 class MainScreen extends StatefulWidget {
+  const MainScreen({super.key});
+
   @override
   State<StatefulWidget> createState() => _MainScreenState();
 }
@@ -21,8 +22,8 @@ class _MainScreenState extends State<MainScreen> {
 
     // init 수행
     _listWidets = [
-      ImageSearchScreen(),
-      ImageFavourites(),
+      const ImageSearchScreen(),
+      const ImageFavourites(),
     ];
   }
 
@@ -68,8 +69,8 @@ class _MainScreenState extends State<MainScreen> {
 
   final _currentPageNotifier = ValueNotifier<int>(0);
 
-  static double _INDICATOR_HEIGHT = 30;
-  static double _BUTTON_HEIGHT = 48;
+  static const double _INDICATOR_HEIGHT = 30;
+  static const double _BUTTON_HEIGHT = 48;
 
   Future<void> dialog() async {
 
@@ -115,7 +116,7 @@ class _MainScreenState extends State<MainScreen> {
                   ),
                   mainAxisSize: MainAxisSize.max,
 
-                  children: [
+                  children: const [
                     // 팝업 메인
                   ],
                 ),

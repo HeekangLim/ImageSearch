@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class ImageFavourites extends StatefulWidget {
-  ImageFavourites({Key? key}) : super(key: key);
+  const ImageFavourites({Key? key}) : super(key: key);
   @override
   _ImageFavouritesState createState() => _ImageFavouritesState();
 }
