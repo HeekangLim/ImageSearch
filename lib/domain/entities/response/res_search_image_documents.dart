@@ -1,6 +1,4 @@
 
-import 'dart:ffi';
-
 import 'package:json_annotation/json_annotation.dart';
 
 part 'res_search_image_documents.g.dart';

@@ -9,7 +9,7 @@ abstract class BaseUseCase<P, R> {
 
   Future<R?> getResult(Function onError, [P? params]) {
 
-    // call 후 result 받음 (it) error 면 null 을 리턴하네
+    // call 후 result 받음
     return call(params).then((it) {
       // logger.d('getResult $it');
       if (it is Failed) {
