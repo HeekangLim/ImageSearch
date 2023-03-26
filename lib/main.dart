@@ -4,6 +4,7 @@ import 'package:jvn_project/options/initializer.dart';
 import 'package:jvn_project/options/injector.dart';
 import 'package:jvn_project/routes/app_routes.dart';
 import 'package:jvn_project/themes/app_theme.dart';
+import 'package:jvn_project/utils/preference_manager.dart';
 
 Future<void> main() async {
   // 위젯 바인딩 보장 위한 선언
@@ -13,6 +14,9 @@ Future<void> main() async {
 
   // GET IT 이용하여 사용할 모델들을 인젝트
   await initializeInjector();
+
+  // preference manager 초기화
+  await PreferenceManager.initialize();
 
   // 세로 고정
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);

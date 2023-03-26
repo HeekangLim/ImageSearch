@@ -60,7 +60,9 @@ dependencies:
   cached_network_image: ^3.2.2
   #내부 SVG 이미지 노출
   flutter_svg: ^1.0.3
-  
+
+  shared_preferences: ^2.0.15
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

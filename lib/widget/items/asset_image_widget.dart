@@ -13,7 +13,7 @@ class AssetImageWidget extends StatelessWidget {
   const AssetImageWidget({
     Key? key,
     required this.image,
-    this.semanticsLabel = 'Pulmuone',
+    this.semanticsLabel = 'JVM',
     this.width,
     this.height,
     this.color,

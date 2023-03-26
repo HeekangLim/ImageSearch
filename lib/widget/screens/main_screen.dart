@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:jvn_project/widget/items/column_widget.dart';
 import 'package:jvn_project/widget/items/main_bottom_navigation_bar.dart';
-import 'package:jvn_project/widget/screens/image_favourites.dart';
+import 'package:jvn_project/widget/screens/image_favourites_screen.dart';
 import 'package:jvn_project/widget/screens/image_search_screen.dart';
+
+import '../items/text_widget.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -23,7 +26,7 @@ class _MainScreenState extends State<MainScreen> {
     // init 수행
     _listWidets = [
       const ImageSearchScreen(),
-      const ImageFavourites(),
+      const ImageFavouritesScreen(),
     ];
   }
 
@@ -42,6 +45,29 @@ class _MainScreenState extends State<MainScreen> {
       onWillPop: () async {
         FocusScope.of(context).unfocus();
 
+        showDialog(context: context,
+            builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('종료 다이얼로그'),
+            content: TextWidget(
+              text: '앱을 종료 하시겠 습니까?',
+            ),
+            actions: <Widget>[
+              TextButton(
+                child: const Text('취소'),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              ),
+              TextButton(
+                child: const Text('확인'),
+                onPressed: () {
+                  SystemNavigator.pop();
+                },
+              ),
+            ],
+          );
+        });
         // 앱 exit 여부 팝업 노출.
         return false;
       },
@@ -63,78 +89,6 @@ class _MainScreenState extends State<MainScreen> {
 
     );
   }
-
-
   PageController? _pageController;
 
-  final _currentPageNotifier = ValueNotifier<int>(0);
-
-  static const double _INDICATOR_HEIGHT = 30;
-  static const double _BUTTON_HEIGHT = 48;
-
-  Future<void> dialog() async {
-
-    await showDialog<void>(
-      context: context,
-      barrierDismissible: true,
-      builder: (BuildContext context)
-    {
-
-      var screenSize = MediaQuery.of(context).size;
-
-      var imageHeigth = screenSize.height * 0.5;
-      var imageWidth = screenSize.width * 0.5;
-
-      var indicatorHeight = _INDICATOR_HEIGHT;
-      var popupHeight = imageHeigth + indicatorHeight + _BUTTON_HEIGHT;
-      // var vFraction = 1 - screenSize.width / screenSize.height + 0.3;
-      // vFraction = vFraction > 0.8 ? 0.8 : vFraction;
-
-      _pageController?.dispose();
-      _pageController = PageController(
-        initialPage: 0,
-        // viewportFraction: vFraction,
-      );
-
-      debugPrint('imageHeigth : $imageHeigth, imageWidth : $imageWidth');
-
-      // return StatefulBuilder(
-      //   builder: (BuildContext context, StateSetter setState) {
-          // Flexible(child:
-          return SafeArea(
-            child: Container(
-              alignment: Alignment.center,
-              margin: const EdgeInsets.symmetric(horizontal: 20),
-            // color: Colors.red,
-              child:
-                ColumnWidget(
-                  height: popupHeight,
-                  width: imageWidth,
-                  decoration: const BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                    color: Colors.white,
-                  ),
-                  mainAxisSize: MainAxisSize.max,
-
-                  children: const [
-                    // 팝업 메인
-                  ],
-                ),
-          ),);
-        },
-      );
-    // });
-  }
-
-  Color checkBoxColor(Set<MaterialState> states) {
-    const Set<MaterialState> interactiveStates = <MaterialState>{
-      MaterialState.selected,
-      MaterialState.focused,
-      MaterialState.pressed,
-    };
-    if (states.any(interactiveStates.contains)) {
-      return Colors.blue;
-    }
-    return Colors.black;
-  }
 }

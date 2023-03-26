@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:jvn_project/define/define.dart';
 import 'package:jvn_project/define/dimens.dart';
-import 'package:jvn_project/domain/entities/response/res_search_image_documents.dart';
 import 'package:jvn_project/options/initializer.dart';
 import 'package:jvn_project/widget/base_widget.dart';
-import 'package:jvn_project/widget/items/asset_image_widget.dart';
-import 'package:jvn_project/widget/items/column_widget.dart';
-import 'package:jvn_project/widget/items/rounded_image_widget.dart';
-import 'package:jvn_project/widget/viewmodels/apps/view_model_search_image.dart';
+import 'package:jvn_project/widget/items/text_widget.dart';
+import 'package:jvn_project/widget/list_items/list_view_widget.dart';
+import 'package:jvn_project/widget/viewmodels/view_model_search_image.dart';
 
 class ImageSearchScreen extends StatefulWidget {
   const ImageSearchScreen({Key? key}) : super(key: key);
+
   @override
   _ImageSearchScreenState createState() => _ImageSearchScreenState();
 }
@@ -22,6 +20,26 @@ class _ImageSearchScreenState extends State<ImageSearchScreen> {
   final FocusNode _textFocus = FocusNode();
 
   String _textSearch = '';
+
+  // static int _currentPage = 0;
+
+  final _scrollController = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+
+    _scrollController.addListener(() {
+      debugPrint('hklim scroll');
+      if (_scrollController.position.atEdge) {
+        bool isTop = _scrollController.position.pixels == 0;
+        if (isTop) {}
+        else {
+          _viewModel?.getNextPage();
+        }
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -57,10 +75,13 @@ class _ImageSearchScreenState extends State<ImageSearchScreen> {
           height: Dimens.height_header_logo,
           alignment: Alignment.center,
           // color: Colors.red,
-          child: const AssetImageWidget(
-            image: Define.ASSET_IMAGE_DEFAULT_ICON,
-            width: Dimens.wh_icon_huge,
-            height: Dimens.wh_icon_huge,)
+          child: TextWidget(
+            // backgroundColor: Colors.blue,
+            alignment: Alignment.center,
+            text: '이미지 검색',
+            textStyle: Theme.of(context).textTheme.titleLarge,
+            size: 20.0,
+          ),
         ),
         Container(
           width: double.infinity,
@@ -68,7 +89,7 @@ class _ImageSearchScreenState extends State<ImageSearchScreen> {
           margin: const EdgeInsets.only(top: 12,
               left: Dimens.spacing_list_default,
               right: Dimens.spacing_list_default,
-              bottom: 12),
+              bottom: 2),
           decoration: const BoxDecoration(
             color: Colors.black12,
             borderRadius: BorderRadius.all(
@@ -81,7 +102,6 @@ class _ImageSearchScreenState extends State<ImageSearchScreen> {
               GestureDetector(
                 onTap: () {
                   ///  검색 (좌측 돋보기 모양) Tab 했을 떄의 동작.
-                  // _viewModel?.search(_textSearch);
                 },
                 child: Container(
                   height: Dimens.height_search_bar,
@@ -158,7 +178,14 @@ class _ImageSearchScreenState extends State<ImageSearchScreen> {
             ],
             // ),
           ),
-        )
+        ),
+        TextWidget(
+          // backgroundColor: Colors.blue,
+          alignment: Alignment.center,
+          text: '리스트가 최하단에 도착할 때 다음 페이지 호출',
+          size: 15.0,
+          color: Colors.black,
+        ),
       ],
     );
   }
@@ -171,75 +198,67 @@ class _ImageSearchScreenState extends State<ImageSearchScreen> {
 
   /// 리스트 영역
   Widget _getBodyWidget(BuildContext context) {
+    // debugPrint('hklim ${_viewModel?.data?.meta?.pageable_count}');
+
+    int itemCnt = 1;
+    if (_viewModel?.data?.meta?.pageable_count != null) {
+      itemCnt = (_viewModel!.data!.meta!.pageable_count! / ViewModelSearchImage.PAGE_CNT).ceil();
+      // debugPrint('hklim itemCnt 1 : $itemCnt');
+    }
+
+    itemCnt = itemCnt > ViewModelSearchImage.MAX_PAGE_NUM ?
+      ViewModelSearchImage.MAX_PAGE_NUM : itemCnt;
+
+    // debugPrint('hklim itemCnt 2 : $itemCnt');
+
     return SafeArea(
-      child: Scrollbar(
-        child: CustomScrollView(
-          slivers: [
-            ..._setSlivers(),
-          ],
-        ),),);
+      child:
+        _viewModel?.listData?.isEmpty ?? true ?
+        TextWidget(text: '검색창에 검색어를 입력 후\n검색을 수행해 주세요',
+          alignment: Alignment.center,
+          width: double.infinity,
+          height: double.infinity,
+          lines: 3,
+        ) :
+        Expanded(
+          child: Scrollbar(
+            child: CustomScrollView(
+              controller: _scrollController,
+              slivers: [
+                ..._setSlivers(),
+              ],
+            ),
+          ),
+        ),
+    );
+
   }
 
   List<Widget> _setSlivers() {
     var slivers = <Widget>[];
-    _viewModel?.data?.documents?.forEach((element) {
+
+    int length = _viewModel?.listData.length ?? 0;
+
+    // _viewModel?.data?.documents?.forEach((element) {
+    for (int index=0; index<length; index++) {
       slivers.add(
-        SliverList(delegate: SliverChildBuilderDelegate((context, index) {
+        SliverList(delegate: SliverChildBuilderDelegate((context, i) {
           return SizedBox(//color: Colors.red,
               width: double.infinity,
-              child: _getListViewWidget(element),
+              // child: _listViewWidget(index),
+              child: ListViewWidget(data: _viewModel?.listData, index: index),
             );
           },
           childCount: 1
         ),),
       );
-    });
-
+    }
     return slivers;
   }
 
-  Widget _getListViewWidget(ResSearchImageDocuments item) {
-    return GestureDetector(
-      onTap: (){
-        FocusScope.of(context).unfocus();
-        // 해당 아이템 선택 시 동작
-        // Navigator.pushNamed(context,
-        //     AppRoutes.PAGE_PATH[PAGES.detail]?? Define.ROUTE_DETAIL,
-        //     arguments: {
-        //       Define.arguments.detail: model,
-        //     });
-      },
-      child: ColumnWidget(
-        color: Colors.transparent,
-        alignment: Alignment.centerLeft,
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        height: Dimens.height_list_huge,
-        margin: const EdgeInsets.symmetric(horizontal: Dimens.spacing_list_default),
-        children: [
-          const Spacer(),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-            // 아이콘 이미지
-              Stack(
-                children: [
-                  const AssetImageWidget(width: Dimens.wh_icon_big,
-                      height: Dimens.wh_icon_big,
-                      image: Define.ASSET_IMAGE_DEFAULT_ICON),
-                  /// image icon 표시 (ios / and 구분 없음)
-                  RoundedImageWidget(
-                    url: item.thumbnail_url,
-                    width: Dimens.wh_icon_big,
-                    height: Dimens.wh_icon_big,
-                    // decoration: BoxDecoration(
-                    //     borderRadius: const BorderRadius.all(Radius.circular(Dimens.radius_circular))
-                    // ),
-                  ),
-              ],),
-            ],
-          ),
-      ],),
-    );
-  }
+  // @override
+  // void dispose() {
+  //   _pageController?.dispose();
+  //   super.dispose();
+  // }
 }

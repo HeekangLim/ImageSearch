@@ -26,7 +26,7 @@ class Dimens {
   static const double fulllist_height_bottom_sheet_btn = 31.0;
   static const double height_search_bar = 40.0;
   static const double height_search_layout = 120.0;
-  static const double height_header_logo = 56.0;
+  static const double height_header_logo = 50.0;
   static const double height_button_default = 48.0;
   static const double height_list_default = 48.0;
   static const double height_list_double = 96.0;
@@ -61,8 +61,8 @@ class Dimens {
   static const double radius_bottomsheet = 8.0;
 
   /// 텍스트 크기
-  static const double txt_size_body_1 = 16.0;
-  static const double txt_size_body_2 = 14.0;
+  static const double txt_size_body_1 = 20.0;
+  static const double txt_size_body_2 = 16.0;
 
   static const double txt_size_subtitle_1 = 16.0;
   static const double txt_size_subtitle_2 = 14.0;

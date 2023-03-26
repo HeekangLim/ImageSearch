@@ -35,7 +35,7 @@ class RepositoriesImplements extends JvmRepositories with DataGetResult {
 
   @override
   Future<Result<ResSearchImage>> getSearchImage(ReqSearchImage query) {
-    // request 방식을 잘못 요청 해서 map 형태로 요청
+    // request 요청 방식 map 형태로 요청
     Map<String, dynamic> queryMap = {
       ReqSearchImageKey.query.getText: query.query,
       ReqSearchImageKey.sort.getText: query.sort,

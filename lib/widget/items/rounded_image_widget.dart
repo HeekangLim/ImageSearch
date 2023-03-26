@@ -10,16 +10,22 @@ class RoundedImageWidget extends StatelessWidget {
   final EdgeInsets? margin;
   final EdgeInsets? padding;
   final BorderRadius? borderRadius;
+  final BorderRadius? imageRadius;
   final BoxFit? fit;
   final bool isIcon;
+  final double? borderWidth;
+  final double? borderHeight;
   // final Decoration? decoration;
 
-  RoundedImageWidget({
+  const RoundedImageWidget({
     Key? key,
     required this.url,
     this.width,
     this.height,
+    this.borderWidth,
+    this.borderHeight,
     this.borderRadius,
+    this.imageRadius,
     this.padding,
     this.margin,
     this.fit,
@@ -36,33 +42,39 @@ class RoundedImageWidget extends StatelessWidget {
       // color: Colors.red,
       margin: margin,
       padding: padding,
-      width: width,
-      height: height,
+      width: borderWidth,
+      height: borderHeight,
+      alignment: Alignment.center,
       child: ClipRRect(
           borderRadius: borderRadius ?? BorderRadius.zero,
           child:AssetImageWidget(
             image: aseetPath,
+            width: width,
+            height: height,
           )
       ),
     );
 
     Widget imageWidget = url != null ?
-    ImageWidget(
-      url: url!,
-      width: width,
-      height: height,
-      margin: margin,
-      fit: fit,
-      errorView: defaultImageWidget,
-      padding: padding,
-      borderRadius: borderRadius ?? const BorderRadius.all(Radius.circular(12)),
-    ) :
+    Container(
+      alignment: Alignment.center,
+      child: ImageWidget(
+        url: url!,
+        width: width,
+        height: height,
+        margin: margin,
+        fit: fit,
+        errorView: defaultImageWidget,
+        padding: padding,
+        borderRadius: imageRadius ?? borderRadius ?? const BorderRadius.all(Radius.circular(12)),
+      ),
+    ):
     Container(color: Colors.transparent,);
 
     Widget borderWidget =
       Container(
-        width: width,
-        height: height,
+        width: borderWidth ?? width,
+        height: borderHeight ?? height,
         decoration: BoxDecoration(
           color: Colors.transparent,
           borderRadius: borderRadius ?? const BorderRadius.all(Radius.circular(12)),

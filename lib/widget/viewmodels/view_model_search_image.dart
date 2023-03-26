@@ -4,6 +4,8 @@ import 'package:jvn_project/domain/usecases/call/usecase_call_search_image.dart'
 import 'package:jvn_project/options/injector.dart';
 import 'package:jvn_project/widget/viewmodels/base_view_model.dart';
 
+import '../../domain/entities/response/res_search_image_documents.dart';
+
 enum Sort {
   accuracy,
   recency
@@ -27,20 +29,20 @@ class ViewModelSearchImage extends BaseViewModel {
   /**
    * 한 페이지 카운트
    */
-  static var _PAGE_CNT = 80;
+  static var PAGE_CNT = 80;
 
   /**
    * 최대 페이지
    */
-  static var _MAX_PAGE_NUM = 50;
+  static var MAX_PAGE_NUM = 50;
 
   /**
   * 기본 정렬
   */
-  static var _DEFAULT_SORT = 'accuracy';
+  static var DEFAULT_SORT = 'accuracy';
   
   /**
-   * 현재 페이지 number
+   * 현재 페이지 number (최소 페이지 1)
    */
   static var _pageNum = 1;
 
@@ -50,23 +52,36 @@ class ViewModelSearchImage extends BaseViewModel {
   var _searchWord = '';
 
   /**
-   * 저장 데이터
+   * 저장 데이터 1페이지 부터 시작하는걸 기억해야한다.
    */
   static Map<int, ResSearchImage?> _data = {};
 
+  static List<ResSearchImageDocuments> _listData = [];
   // Map<int, ResSearchImage?> get data => _data;
 
   ResSearchImage? get data => _data[_pageNum];
 
+  List<ResSearchImageDocuments> get listData => _listData;
+  // 검색 수행
   Future<void> search(String word) async{
     _data.clear();
+
+    _pageNum = 1;
     await getCallSearchImage(query: word);
+
+    _listData = _data?[_pageNum]?.documents ?? [];
+
+    notifyListeners();
   }
 
-  Future<void> getPage(int page) async {
-    if (!_data.containsKey(page)) {
-      await getCallSearchImage(page: page);
+  // 현재 검색어 페이지 변경
+  Future<void> getNextPage() async {
+    _pageNum ++;
+    if (!_data.containsKey(_pageNum)) {
+      await getCallSearchImage(page: _pageNum);
+      _listData.addAll(_data?[_pageNum]?.documents ?? []);
     }
+    notifyListeners();
   }
 
   Future<void> getCallSearchImage({String? query,
@@ -78,14 +93,13 @@ class ViewModelSearchImage extends BaseViewModel {
     _searchWord = query ?? _searchWord;
     _pageNum = page ?? _pageNum;
 
-    var thisSort = sort?.getText ?? _DEFAULT_SORT;
+    var thisSort = sort?.getText ?? DEFAULT_SORT;
 
-    var req = ReqSearchImage(_searchWord, thisSort, _pageNum, _MAX_PAGE_NUM);
+    var req = ReqSearchImage(_searchWord, thisSort, _pageNum, PAGE_CNT);
 
     // var getData = await restApiCall(usecaseCallSearchImage, req);
-    netWorkCall(_usecaseCallSearchImage, req).then((response) {
+    await netWorkCall(_usecaseCallSearchImage, req).then((response) {
       _data[_pageNum] = response?.data;
-      notifyListeners();
     });
   }
 }
