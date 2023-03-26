@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class CustomIconCheckbox extends StatefulWidget {
-  const CustomIconCheckbox({
+  CustomIconCheckbox({
     Key? key,
     this.iconSize = 24,
     this.onChanged,
@@ -10,7 +10,7 @@ class CustomIconCheckbox extends StatefulWidget {
     this.uncheckedColor = Colors.black,
     this.checkedIcon,
     this.uncheckedIcon,
-    this.isChecked = false,
+    this.isChecked,
   }) : super(key: key);
 
   // Now you can set the checkmark size of your own
@@ -19,7 +19,7 @@ class CustomIconCheckbox extends StatefulWidget {
   final Color uncheckedColor;
   final Icon? checkedIcon;
   final Icon? uncheckedIcon;
-  final bool isChecked;
+  bool? isChecked = false;
   final Function(bool)? onChanged;
 
   @override
@@ -27,16 +27,26 @@ class CustomIconCheckbox extends StatefulWidget {
 }
 
 class _CustomIconCheckboxState extends State<CustomIconCheckbox> {
-  late bool isChecked = widget.isChecked;
+  // late bool isChecked = widget.isChecked;
+
+  @override
+  void initState() {
+    super.initState();
+    // isChecked = widget.isChecked;
+  }
 
   @override
   Widget build(BuildContext context) {
+    // isChecked = widget.isChecked;
+    debugPrint('hklim item isChecked : ${widget.isChecked}');
+
     return GestureDetector(
       onTap: () {
-        setState(() => isChecked = !isChecked);
-        widget.onChanged?.call(isChecked);
+        setState(() => widget.isChecked = !(widget.isChecked ?? false));
+        debugPrint('hklim item changed : ${widget.isChecked}');
+        widget.onChanged?.call(widget.isChecked ?? false);
       },
-      child: isChecked
+      child: widget.isChecked ?? false
             ? widget.checkedIcon ?? Icon(
           Icons.favorite,
           size: widget.iconSize,

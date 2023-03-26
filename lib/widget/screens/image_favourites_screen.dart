@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:jvn_project/define/dimens.dart';
 import 'package:jvn_project/utils/preference_helper.dart';
 import 'package:jvn_project/widget/items/common_widget.dart';
 import 'package:jvn_project/widget/list_items/list_view_widget.dart';
+
+import '../../domain/entities/response/res_search_image_documents.dart';
 
 class ImageFavouritesScreen extends StatefulWidget {
   const ImageFavouritesScreen({Key? key}) : super(key: key);
@@ -12,10 +13,12 @@ class ImageFavouritesScreen extends StatefulWidget {
 
 class _ImageFavouritesScreenState extends State<ImageFavouritesScreen> {
 
-  var _mapFavorites = PreferenceHelper.getImages();
+  Map<String, ResSearchImageDocuments>? _mapFavorites;
 
   @override
   Widget build(BuildContext context) {
+    _mapFavorites = PreferenceHelper.getImages();
+
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -43,7 +46,7 @@ class _ImageFavouritesScreenState extends State<ImageFavouritesScreen> {
   List<Widget> _setSlivers() {
     var slivers = <Widget>[];
 
-    int length = _mapFavorites.length;
+    int length = _mapFavorites?.length ?? 0;
 
     // _viewModel?.data?.documents?.forEach((element) {
     for (int index=0; index<length; index++) {
@@ -53,9 +56,16 @@ class _ImageFavouritesScreenState extends State<ImageFavouritesScreen> {
             width: double.infinity,
             // child: _listViewWidget(index),
             child: ListViewWidget(
-              data: _mapFavorites.values.toList(),
+              data: _mapFavorites?.values.toList(),
               index: index,
-              isFavourites: false,
+              onChanged: (isChecked) async {
+                debugPrint('hklim $isChecked');
+                if(!isChecked) {
+                  // await Future.delayed(const Duration(milliseconds: 500));
+                  setState(() {
+                  });
+                }
+              },
             ),
           );
         },

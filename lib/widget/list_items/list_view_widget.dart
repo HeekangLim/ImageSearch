@@ -14,15 +14,17 @@ import '../../utils/preference_helper.dart';
 
 class ListViewWidget extends StatelessWidget {
 
-  List<ResSearchImageDocuments>? data;
+  final List<ResSearchImageDocuments>? data;
   int index;
-  bool isFavourites;
-  
+  final bool isFavourites;
+  final Function(bool)? onChanged;
+
   ListViewWidget({
     Key? key,
     required this.data,
     this.index = 0,
     this.isFavourites = true,
+    this.onChanged,
   }):super(key: key);
 
 
@@ -32,10 +34,10 @@ class ListViewWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    // debugPrint('hklim listViewWidget');
-
     _isChecked = _favouriteData.containsKey(data?[index].image_url);
-    
+
+    debugPrint('hklim listViewWidget _isChecked : $_isChecked');
+
     return GestureDetector(
       onTap: (){
         FocusScope.of(context).unfocus();
@@ -103,12 +105,14 @@ class ListViewWidget extends StatelessWidget {
                   isChecked: _isChecked,
                   onChanged: (isChecked) {
                     // check box 선택 시 동작
+                    debugPrint('hklim image search screen isChecked : $isChecked');
                     if (isChecked) {
                       PreferenceHelper.saveImage(data?[index]);
                     }
                     else {
                       PreferenceHelper.removeImage(data?[index]);
                     }
+                    onChanged?.call(isChecked);
                   },
                 ) : Container(),
             ],
