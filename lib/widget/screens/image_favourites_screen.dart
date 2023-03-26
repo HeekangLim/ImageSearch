@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:jvn_project/utils/preference_helper.dart';
 import 'package:jvn_project/widget/items/common_widget.dart';
+import 'package:jvn_project/widget/items/text_widget.dart';
 import 'package:jvn_project/widget/list_items/list_view_widget.dart';
 
 import '../../domain/entities/response/res_search_image_documents.dart';
@@ -35,7 +36,14 @@ class _ImageFavouritesScreenState extends State<ImageFavouritesScreen> {
   /// 리스트 영역
   Widget _getBodyWidget(BuildContext context) {
     return SafeArea(
-      child: Scrollbar(
+      child:
+        _mapFavorites?.isEmpty ?? true ?
+        TextWidget(text: '즐겨찾기 목록이 비었습니다.',
+          alignment: Alignment.center,
+          width: double.infinity,
+          height: double.infinity,
+          lines: 3,
+        ) :Scrollbar(
         child: CustomScrollView(
           slivers: [
             ..._setSlivers(),
