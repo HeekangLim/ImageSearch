@@ -9,7 +9,8 @@ import 'package:jvn_project/options/initializer.dart';
 // GetIt 을 사용하면 수비게 종속성을 부여할 수 있음. 추후 usecase 등 작성 시에 사용 예정.
 final GetIt injector = GetIt.instance;
 
-const _apiKey = '2734ac3ed8cc0af18bd3ffc59ee98fb6';
+// 사용할 API Key, 로그인 연동으로 해도 좋음
+const _apiKey = '';
 
 Future<void> initializeInjector() async {
   
